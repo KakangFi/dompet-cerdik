@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dompet Cerdas Pro</title>
+
+<style>
+:root{
+ --bg:#050816;--bg2:#0a1025;--card:rgba(13,22,49,.72);--text:#eef5ff;--muted:#8ea3c7;
+ --line:rgba(117,161,255,.18);--p:#6c7cff;--cyan:#28e7ff;--g:#39e6a0;--r:#ff5577;--o:#ffc857;
+ --shadow:0 18px 55px rgba(0,0,0,.38);--glow:0 0 28px rgba(40,231,255,.12)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+ margin:0;color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;
+ background:
+ radial-gradient(circle at 15% 15%,rgba(108,124,255,.18),transparent 28%),
+ radial-gradient(circle at 85% 10%,rgba(40,231,255,.12),transparent 25%),
+ radial-gradient(circle at 50% 100%,rgba(125,55,255,.12),transparent 35%),var(--bg);
+ min-height:100vh;overflow-x:hidden
+}
+body:before{
+ content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;
+ background-image:linear-gradient(rgba(40,231,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(40,231,255,.08) 1px,transparent 1px);
+ background-size:42px 42px;mask-image:linear-gradient(to bottom,black,transparent 85%);z-index:-1
+}
+body:after{
+ content:"";position:fixed;width:360px;height:360px;border-radius:50%;right:-120px;top:180px;
+ background:rgba(108,124,255,.13);filter:blur(70px);pointer-events:none;z-index:-1
+}
+header{
+ position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(10,18,48,.94),rgba(20,24,70,.88));
+ border-bottom:1px solid rgba(40,231,255,.2);padding:34px 18px 78px
+}
+header:after{
+ content:"";position:absolute;width:520px;height:520px;border:1px solid rgba(40,231,255,.12);
+ border-radius:50%;right:-180px;top:-360px;box-shadow:0 0 0 45px rgba(40,231,255,.025),0 0 0 90px rgba(108,124,255,.025)
+}
+.wrap{max-width:1100px;margin:auto;position:relative;z-index:1}
+.brand{font-size:29px;font-weight:900;letter-spacing:.2px;text-shadow:0 0 22px rgba(40,231,255,.28)}
+.brand:first-letter{filter:drop-shadow(0 0 10px var(--cyan))}
+.sub{color:#a9b8d5;margin-top:7px;font-size:14px;max-width:720px}
+main{max-width:1100px;margin:-43px auto 35px;padding:0 18px;position:relative;z-index:2}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.card{
+ background:linear-gradient(145deg,rgba(18,29,61,.78),rgba(8,15,36,.7));border:1px solid var(--line);
+ border-radius:20px;padding:18px;box-shadow:var(--shadow),var(--glow);backdrop-filter:blur(18px);
+ transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease
+}
+.card:hover{transform:translateY(-3px);border-color:rgba(40,231,255,.38);box-shadow:var(--shadow),0 0 32px rgba(40,231,255,.1)}
+.grid .card{position:relative;overflow:hidden}
+.grid .card:before{content:"";position:absolute;inset:0 auto auto 0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:.75}
+.label{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:1px}
+.value{font-size:22px;font-weight:900;margin-top:7px}.g{color:var(--g)}.r{color:var(--r)}.p{color:#9aa7ff}
+section{margin-top:18px}.cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.title{font-size:17px;font-weight:850;margin:0 0 14px;letter-spacing:.1px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:11px}
+label{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}
+input,select,button{font:inherit}
+input,select{
+ width:100%;padding:11px 12px;border:1px solid rgba(142,163,199,.2);border-radius:12px;
+ background:rgba(3,9,25,.72);color:var(--text);outline:none;transition:.2s
+}
+input::placeholder{color:#536887}
+input:focus,select:focus{border-color:rgba(40,231,255,.65);box-shadow:0 0 0 3px rgba(40,231,255,.08)}
+button{border:0;border-radius:12px;padding:11px 14px;font-weight:800;cursor:pointer;transition:.2s}
+button:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.primary{background:linear-gradient(135deg,#596bff,#28bde8);color:white;box-shadow:0 8px 22px rgba(72,111,255,.22)}
+.light{background:rgba(108,124,255,.13);color:#b7c0ff;border:1px solid rgba(108,124,255,.2)}
+.danger{background:rgba(255,85,119,.1);color:#ff7d98;border:1px solid rgba(255,85,119,.18)}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.full{grid-column:1/-1}
+.meter{height:12px;background:rgba(142,163,199,.12);border:1px solid rgba(142,163,199,.1);border-radius:20px;overflow:hidden;margin:8px 0 14px}
+.bar{height:100%;background:linear-gradient(90deg,#596bff,var(--cyan));box-shadow:0 0 16px rgba(40,231,255,.35);transition:.4s}
+.bar.bad{background:linear-gradient(90deg,#ff456b,#ff8a6b);box-shadow:0 0 16px rgba(255,85,119,.3)}
+.big{font-size:27px;font-weight:900}.mini{font-size:13px;color:var(--muted)}
+.advice{padding:14px;border-radius:14px;line-height:1.55;background:rgba(40,231,255,.07);border:1px solid rgba(40,231,255,.12)}
+.good{background:rgba(57,230,160,.07);border-color:rgba(57,230,160,.15)}
+.warn{background:rgba(255,200,87,.07);border-color:rgba(255,200,87,.15)}
+.bad{background:rgba(255,85,119,.07);border-color:rgba(255,85,119,.15)}
+canvas{width:100%;height:210px;border-radius:14px;background:rgba(2,8,24,.28)}
+.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse}th,td{padding:11px 7px;border-bottom:1px solid rgba(142,163,199,.12);text-align:left;font-size:13px}
+th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.6px}.del{padding:6px 9px;background:rgba(255,85,119,.1);color:#ff7d98;border:1px solid rgba(255,85,119,.16)}
+footer{text-align:center;color:#657b9f;font-size:12px;padding:7px 18px 30px}
+@media(max-width:780px){.grid{grid-template-columns:1fr 1fr}.cols{grid-template-columns:1fr}}
+@media(max-width:450px){.grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}.full{grid-column:auto}.brand{font-size:24px}}
+</style>
+
+</head>
+<body>
+<header><div class="wrap"><div class="brand">💰 Dompet Cerdas Pro</div><div class="sub">Kelola pendapatan, kebutuhan pokok, target tabungan, dan uang untuk keinginan.</div></div></header>
+<main>
+<section class="grid">
+<div class="card"><div class="label">Pendapatan</div><div id="income" class="value g">Rp0</div></div>
+<div class="card"><div class="label">Kebutuhan Pokok</div><div id="needs" class="value r">Rp0</div></div>
+<div class="card"><div class="label">Keinginan</div><div id="wants" class="value r">Rp0</div></div>
+<div class="card"><div class="label">Sisa / Surplus</div><div id="surplus" class="value p">Rp0</div></div>
+</section>
+
+<section class="cols">
+<div class="card"><h2 class="title">➕ Pendapatan</h2>
+<div class="row"><div><label>Sumber</label><input id="inName" placeholder="Gaji / uang saku"></div><div><label>Jumlah</label><input id="inAmt" type="number" min="0" placeholder="5000000"></div></div>
+<button class="primary" onclick="addIncome()">Tambah Pendapatan</button></div>
+<div class="card"><h2 class="title">➖ Pengeluaran</h2>
+<div class="row"><div><label>Nama</label><input id="exName" placeholder="Beras, listrik, game..."></div><div><label>Jumlah</label><input id="exAmt" type="number" min="0" placeholder="500000"></div><div class="full"><label>Kategori</label><select id="exType"><option value="needs">Kebutuhan pokok</option><option value="wants">Keinginan</option></select></div></div>
+<button class="primary" onclick="addExpense()">Tambah Pengeluaran</button></div>
+</section>
+
+<section class="cols">
+<div class="card"><h2 class="title">🏦 Target Tabungan</h2>
+<div class="row"><div><label>Target tabungan</label><input id="target" type="number" min="0" value="10000000" oninput="render()"></div><div><label>Tabungan saat ini</label><input id="saved" type="number" min="0" value="0" oninput="render()"></div></div>
+<div class="mini">Kemajuan target</div><div class="meter"><div id="targetBar" class="bar"></div></div><div id="targetText" class="big">Rp0 / Rp10.000.000</div></div>
+<div class="card"><h2 class="title">🎯 Pembagian Surplus</h2>
+<div class="row"><div><label>% Tabungan</label><input id="savePct" type="number" min="0" max="100" value="70" oninput="render()"></div><div><label>% Keinginan</label><input id="wantPct" type="number" min="0" max="100" value="30" oninput="render()"></div></div>
+<div id="plan"></div></div>
+</section>
+
+<section class="cols">
+<div class="card"><h2 class="title">🧺 Anggaran Kebutuhan Pokok</h2>
+<div class="row"><div><label>Batas kebutuhan per bulan</label><input id="needBudget" type="number" min="0" value="3000000" oninput="render()"></div><div><label>Persentase batas dari pendapatan</label><input id="needPct" type="number" min="0" max="100" value="60" oninput="syncBudget()"></div></div>
+<div class="mini">Terpakai</div><div class="meter"><div id="needBar" class="bar"></div></div><div id="needText"></div></div>
+<div class="card"><h2 class="title">🧠 Evaluasi</h2><div id="advice" class="advice">Tambahkan data untuk melihat evaluasi.</div></div>
+</section>
+
+<section class="card"><h2 class="title">📈 Ringkasan Visual</h2><canvas id="chart" width="1000" height="210"></canvas></section>
+
+<section class="card"><h2 class="title">📝 Riwayat Transaksi</h2>
+<div class="actions"><button class="light" onclick="demo()">Isi Contoh</button><button class="danger" onclick="clearAll()">Hapus Semua</button></div>
+<div class="tablewrap"><table><thead><tr><th>Jenis</th><th>Nama</th><th>Kategori</th><th>Jumlah</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
+</section>
+</main>
+<footer>Data hanya disimpan di browser perangkat ini menggunakan localStorage. Tidak membutuhkan database.</footer>
+<script>
+const KEY='dompetCerdasPro_v1';let d=JSON.parse(localStorage.getItem(KEY)||'{"income":[],"expenses":[]}');
+const $=id=>document.getElementById(id),rp=n=>new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(n||0);
+function totals(){return{income:d.income.reduce((a,x)=>a+x.amount,0),needs:d.expenses.filter(x=>x.type==='needs').reduce((a,x)=>a+x.amount,0),wants:d.expenses.filter(x=>x.type==='wants').reduce((a,x)=>a+x.amount,0)}}
+function save(){localStorage.setItem(KEY,JSON.stringify(d));render()}
+function addIncome(){let name=$('inName').value.trim(),amount=+$('inAmt').value;if(!name||amount<=0)return alert('Isi sumber dan jumlah.');d.income.push({id:Date.now(),name,amount});$('inName').value='';$('inAmt').value='';save()}
+function addExpense(){let name=$('exName').value.trim(),amount=+$('exAmt').value,type=$('exType').value;if(!name||amount<=0)return alert('Isi nama dan jumlah.');d.expenses.push({id:Date.now(),name,amount,type});$('exName').value='';$('exAmt').value='';save()}
+function del(kind,id){d[kind]=d[kind].filter(x=>x.id!==id);save()}
+function clearAll(){if(confirm('Hapus semua transaksi?')){d={income:[],expenses:[]};save()}}
+function syncBudget(){let t=totals().income,p=Math.max(0,Math.min(100,+$('needPct').value||0));$('needBudget').value=Math.round(t*p/100);render()}
+function demo(){d={income:[{id:1,name:'Gaji',amount:5000000},{id:2,name:'Sampingan',amount:500000}],expenses:[{id:3,name:'Bahan makanan',amount:1200000,type:'needs'},{id:4,name:'Listrik & internet',amount:500000,type:'needs'},{id:5,name:'Transportasi',amount:400000,type:'needs'},{id:6,name:'Hiburan',amount:250000,type:'wants'}]};$('target').value=10000000;$('saved').value=2000000;save()}
+function render(){
+ let t=totals(),s=t.income-t.needs-t.wants;$('income').textContent=rp(t.income);$('needs').textContent=rp(t.needs);$('wants').textContent=rp(t.wants);$('surplus').textContent=rp(s);
+ let sp=Math.max(0,Math.min(100,+$('savePct').value||0)),wp=Math.max(0,Math.min(100,+$('wantPct').value||0));
+ $('plan').innerHTML=sp+wp===100?`<div>Tabungan: <b>${rp(Math.max(0,s)*sp/100)}</b></div><div class="meter"><div class="bar" style="width:${sp}%"></div></div><div>Keinginan: <b>${rp(Math.max(0,s)*wp/100)}</b></div>`:`<div class="advice warn">Persentase harus berjumlah 100%.</div>`;
+ let target=+$('target').value||0,saved=+$('saved').value||0,prog=target?Math.min(100,saved/target*100):0;$('targetBar').style.width=prog+'%';$('targetText').textContent=`${rp(saved)} / ${rp(target)} (${prog.toFixed(0)}%)`;
+ let budget=+$('needBudget').value||0,np=budget?Math.min(100,t.needs/budget*100):0;$('needBar').style.width=np+'%';$('needBar').className='bar '+(t.needs>budget&&budget?'bad':'');$('needText').innerHTML=`${rp(t.needs)} dari ${rp(budget)} (${budget?(t.needs/budget*100).toFixed(1):0}%)`;
+ let ratio=t.income?t.needs/t.income*100:0,msg=t.income===0?'Masukkan pendapatan terlebih dahulu.':s<0?'⚠️ Pengeluaran melebihi pendapatan. Prioritaskan kebutuhan dan kurangi keinginan.':ratio>60?'⚠️ Kebutuhan pokok cukup tinggi. Coba cari pos yang bisa dihemat.':s/t.income<.2?'💡 Surplus masih tipis. Pertimbangkan menekan pengeluaran keinginan.':'✅ Kondisi cukup sehat. Sebagian surplus bisa dialihkan ke tabungan dan sebagian untuk keinginan.';
+$('advice').className='advice '+(s<0?'bad':ratio>60?'warn':'good');$('advice').innerHTML=msg+`<br><small>Rasio kebutuhan: ${ratio.toFixed(1)}% dari pendapatan.</small>`;
+let rows=[...d.income.map(x=>['Pendapatan',x.name,'—',x.amount,'income',x.id]),...d.expenses.map(x=>['Pengeluaran',x.name,x.type==='needs'?'Kebutuhan pokok':'Keinginan',x.amount,'expenses',x.id])];$('rows').innerHTML=rows.length?rows.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td><td>${rp(x[3])}</td><td><button class="del" onclick="del('${x[4]}',${x[5]})">Hapus</button></td></tr>`).join(''):'<tr><td colspan="5">Belum ada transaksi.</td></tr>';draw(t)
+}
+function draw(t){let c=$('chart'),x=c.getContext('2d'),w=c.width,h=c.height;x.clearRect(0,0,w,h);let vals=[t.income,t.needs,t.wants,Math.max(0,t.income-t.needs-t.wants)],labs=['Pendapatan','Kebutuhan','Keinginan','Surplus'],m=Math.max(...vals,1),bw=w/6;x.font='14px system-ui';vals.forEach((v,i)=>{let bh=(v/m)*145,bx=(i*2+1)*bw,bY=h-35-bh;let grad=x.createLinearGradient(0,bY,0,h-35);grad.addColorStop(0,i===0?'#28e7ff':i===3?'#39e6a0':'#ff5577');grad.addColorStop(1,i===0?'#596bff':i===3?'#197b73':'#8d3150');x.fillStyle=grad;x.shadowBlur=18;x.shadowColor=i===0?'#28e7ff':i===3?'#39e6a0':'#ff5577';x.fillRect(bx,bY,bw,bh);x.shadowBlur=0;x.fillStyle='#dbe7ff';x.fillText(labs[i],bx,h-12);x.fillText(rp(v).replace('Rp','Rp '),bx,bY-7)})}
+render();
+</script>
+</body></html>
